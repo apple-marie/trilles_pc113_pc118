@@ -19,4 +19,22 @@ class ListController extends Controller
         return response()->json(Employee::all());
             
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->get('search');
+       $student = Student::where('first_name', 'like', '%'.$search.'%')->get();
+       $employee = Employee::where('first_name', 'like', '%'.$search.'%')->get();
+
+        return response()->json([
+            'student' => $students,
+            'employee' => $employees,
+        ]);
+
+    }
+    
+    public function find($id)
+    {
+        return response()->json(Student::find($id));
+    }
 }
