@@ -24,3 +24,4 @@ Route::get('/students', [ListController::class, 'index']);
 Route::get('/employees', [ListController::class, 'employee']);
 
 Route::get('/search', [ListController::class, 'search']);
+Route::get('/find', [ListController::class, 'find']);

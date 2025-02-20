@@ -22,13 +22,13 @@ class ListController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->get('search');
+        $search = $request->get('first_name');
        $student = Student::where('first_name', 'like', '%'.$search.'%')->get();
        $employee = Employee::where('first_name', 'like', '%'.$search.'%')->get();
 
         return response()->json([
-            'student' => $students,
-            'employee' => $employees,
+            'student' => $student,
+            'employee' => $employee,
         ]);
 
     }
