@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Student;
+
+class StudentController extends Controller
+{
+    public function index()
+    {
+        return response()->json(Student::all());
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->get('searchlist');
+        $student = Student::where('first_name', 'like', '%'.$search.'%')
+            ->orWhere('last_name', 'like', '%'.$search.'%')
+            ->orWhere('id', 'like', '%'.$search.'%')->get();
+
+        return response()->json([
+            'student' => $student,
+        ]);
+    }
+
+    public function create(Request $request)
+    {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:students,email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $student = Student::create($validatedData);
+        return response()->json([
+            'message' => 'Student created successfully',
+            'student' => $student,
+        ], 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $student = Student::find($id);
+        if (is_null($student)) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $validatedData = $request->validate([
+            'first_name' => 'string',
+            'last_name' => 'string',
+            'email' => 'email|unique:students,email,'.$id,
+            'password' => 'nullable',
+        ]);
+
+        $student->update($validatedData);
+        return response()->json([
+            'message' => 'Student updated successfully',
+            'student' => $student,
+        ]);
+    }
+
+    public function delete($id)
+    {
+        $student = Student::find($id);
+        if (is_null($student)) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+        $student->delete();
+        return response()->json([
+            'message' => 'Student deleted successfully',
+        ]);
+    }
+}
