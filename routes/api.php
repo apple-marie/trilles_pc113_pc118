@@ -34,3 +34,5 @@ Route::post('/employees', [EmployeeController::class, 'create']);
 Route::put('/employees/{id}', [EmployeeController::class, 'update']);
 Route::delete('/employees/{id}', [EmployeeController::class, 'delete']);
 Route::post('/employees/login', [EmployeeController::class, 'login']);
+
+
