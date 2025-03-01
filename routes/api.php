@@ -25,6 +25,7 @@ Route::get('/students/search', [StudentController::class, 'search']);
 Route::post('/students', [StudentController::class, 'create']);
 Route::put('/students/{id}', [StudentController::class, 'update']);
 Route::delete('/students/{id}', [StudentController::class, 'delete']);
+Route::post('/students/login', [StudentController::class, 'login']);
 
 
 Route::get('/employees', [EmployeeController::class, 'employee']);
@@ -32,3 +33,4 @@ Route::get('/employees/search', [EmployeeController::class, 'search']);
 Route::post('/employees', [EmployeeController::class, 'create']);
 Route::put('/employees/{id}', [EmployeeController::class, 'update']);
 Route::delete('/employees/{id}', [EmployeeController::class, 'delete']);
+Route::post('/employees/login', [EmployeeController::class, 'login']);
