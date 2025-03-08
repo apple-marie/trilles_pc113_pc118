@@ -2,39 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Exception;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
     public function login(Request $request)
 {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    try {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $credentials = $request->only('email', 'password');
+        if ($validator->fails()){
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
 
-    if (!Auth::attempt($credentials)) {
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        $credentials = $request->only('email', 'password');
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        $user = Auth::user();
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login successful',
+            'user' => $user,
+            'token' => $token,
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+        'message' => 'Error occurred during login', 
+        'error' => $e->getMessage(),
+    ], 400);
     }
-
-    $user = Auth::user();
-    $token = $user->createToken('authToken')->plainTextToken;
-
-    return response()->json([
-        'message' => 'Login successful',
-        'user' => $user,
-        'token' => $token,
-    ]);
 }
 
 
     public function create(Request $request)
 {
+    
     $validatedData = $request->validate([
         'name' => 'required',
         'email' => 'required',
