@@ -24,15 +24,14 @@ use App\Http\Controllers\EmployeeController;
 
 Route::post('/users/login', [UserController::class,'login']);
 Route::post('/users',[UserController::class,'create']);
+Route::get('/students', [StudentController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function (){
-Route::get('/students', [StudentController::class, 'index']);
 Route::get('/students/search', [StudentController::class, 'search']);
 Route::post('/students', [StudentController::class, 'create']);
 Route::put('/students/{id}', [StudentController::class, 'update']);
 Route::delete('/students/{id}', [StudentController::class, 'delete']);
 Route::post('/students/login', [StudentController::class, 'login']);
-
 
 Route::get('/employees', [EmployeeController::class, 'employee']);
 Route::get('/employees/search', [EmployeeController::class, 'search']);
