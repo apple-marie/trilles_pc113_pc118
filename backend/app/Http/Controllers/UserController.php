@@ -11,42 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function login(Request $request)
-{
-    try {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
-        if ($validator->fails()){
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $credentials = $request->only('email', 'password');
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-
-        $user = Auth::user();
-        $token = $user->createToken('authToken')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => $user,
-            'token' => $token,
-        ]);
-    } catch (Exception $e) {
-        return response()->json([
-        'message' => 'Error occurred during login', 
-        'error' => $e->getMessage(),
-    ], 400);
-    }
-}
 
 
     public function create(Request $request)
@@ -73,4 +38,16 @@ class UserController extends Controller
     ], 201);
 }
 
+public function login(Request $request){
+    $credentials = User::where('email', $request->email)->first();
+
+    if($credentials && Hash::check($request->password, $credentials->password)) {
+        $token = $credentials->createToken('personal-token')->plainTextToken;
+        return response()->json([
+            'token' => $token,
+            'data' => $credentials
+        ]);
+    }
+
+}
 }
