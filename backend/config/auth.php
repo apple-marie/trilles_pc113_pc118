@@ -41,7 +41,7 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver' => 'token', // or 'token', 'passport', 'jwt'
+            'driver' => 'sanctum', // or 'token', 'passport', 'jwt'
             'provider' => 'users',
         ],
     ],

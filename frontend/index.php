@@ -64,7 +64,6 @@
         fetch('http://127.0.0.1:8000/api/users/login', {
             method: 'POST',
             headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token'),
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
@@ -74,7 +73,7 @@
         .then(data => {
             if (data.token) {
                 localStorage.setItem('token', data.token);
-                console.log('Login successful:', data);
+                window.location.href = 'dashboard.php';
             } else {
                 document.getElementById('errorMessage').textContent = data.message || 'Login failed';
                 console.log('Login failed:', data);
