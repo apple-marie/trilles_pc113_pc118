@@ -40,6 +40,15 @@ class UserController extends Controller
 
 public function login(Request $request){
     $credentials = User::where('email', $request->email)->first();
+    try {
+        if(!$credentials || !Hash::check($request->password, $credentials->password)) {
+            throw new Exception('Invalid credentials');
+        }
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => 'Invalid credentials',
+        ], 401);
+    }
 
     if($credentials && Hash::check($request->password, $credentials->password)) {
         $token = $credentials->createToken('personal-token')->plainTextToken;
