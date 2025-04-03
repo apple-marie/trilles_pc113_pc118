@@ -21,12 +21,13 @@ use App\Http\Controllers\EmployeeController;
 //     return $request->user();
 // });
  
+Route::get('/student/{id}', [StudentController::class, 'show']);
 
 Route::post('/users/login', [UserController::class,'login']);
 Route::post('/users',[UserController::class,'create']);
 
 Route::get('/students', [StudentController::class, 'index']);
-Route::middleware('allowed.roles')->group(function (){
+// Route::middleware('allowed.roles')->group(function (){
     Route::get('/students/search', [StudentController::class, 'search']);
     Route::post('/students', [StudentController::class, 'create']);
     Route::put('/students/{id}', [StudentController::class, 'update']);
@@ -41,4 +42,4 @@ Route::middleware('allowed.roles')->group(function (){
     Route::post('/employees/login', [EmployeeController::class, 'login']);
 
 
-});
+// });

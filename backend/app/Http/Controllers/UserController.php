@@ -46,7 +46,7 @@ public function login(Request $request){
         }
     } catch (Exception $e) {
         return response()->json([
-            'message' => 'Invalid credentials',
+            'message' => $e->getMessage()
         ], 401);
     }
 
@@ -59,4 +59,5 @@ public function login(Request $request){
     }
 
 }
+
 }

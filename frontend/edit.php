@@ -6,6 +6,7 @@
     <title>Edit User</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="container col-md-4 mt-5">
@@ -40,5 +41,34 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        const idFromUrl = window.location.search.match(/id=([^&]+)/);
+        const id = idFromUrl ? idFromUrl[1] : null;
+
+        fetch('http://127.0.0.1:8000/api/students', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            body: JSON.stringify({
+                id: id,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+    })
+</script>
 </body>
 </html>

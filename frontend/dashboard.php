@@ -9,10 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
-        crossorigin="anonymous">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
@@ -42,6 +39,47 @@
         </table>
     </div>
 
+
+<div class="modal fade" id="edit" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <div class="card shadow">
+        <div class="card-body">
+            <form action="" method="POST">
+                <!--  Name & lastname Field -->
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">FirstName</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" required placeholder="Enter firstname">
+                </div>
+                <div class="mb-3">
+                    <label for="lastname" class="form-label">LastName</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" required placeholder="Enter lastname">
+                </div>
+
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="Enter email">
+                </div>
+            </form>
+        </div>
+    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="updatebtn">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
     <script>
@@ -72,8 +110,13 @@
                             data: null,
                             render: function(data, type, row){
                                 return `
-                                <div class="d-flex gap-3">
-                                    <a class="text-decoration-none" href="edit.php?id=${row.id}">
+                                <div class="d-flex gap-3" >
+                                    <a class="text-decoration-none editbtn"
+                                    data-id="${row.id}"
+                                    data-firstname="${row.first_name}"
+                                    data-lastname="${row.last_name}"
+                                    data-email="${row.email}"
+                                    data-bs-toggle="modal" data-bs-target="#edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path> <path d="M16 5l3 3"></path> </svg> 
                                     </a>
                                     <a style="color:red" class="text-decoration-none" href="delete.php?id=${row.id}">
@@ -94,6 +137,44 @@
             .catch(error => console.error("Error fetching students:", error));
         });
     </script>
+
+<!-- pagpadisplay sa pangan nga editonon adto sa modal -->
+        <script>
+            $(document).on('click', '.editbtn', function() {
+                let id = $(this).data('id');
+                let firstname = $(this).data('firstname');
+                let lastname = $(this).data('lastname');
+                let email = $(this).data('email');
+
+                $('#edit').find("input[name='firstname']").val(firstname);
+                $('#edit').find("input[name='lastname']").val(lastname);
+                $('#edit').find("input[name='email']").val(email);
+
+            })
+        </script>
+
+
+    <script>
+        $(document).on('click','#updatebtn', function() {
+            let firstname = document.getElementById('firstname').value;
+            let lastname = document.getElementById('lastname').value;
+            let email = document.getElementById('email').value;
+            
+        } )
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
