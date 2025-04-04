@@ -30,8 +30,8 @@ Route::get('/students', [StudentController::class, 'index']);
 // Route::middleware('allowed.roles')->group(function (){
     Route::get('/students/search', [StudentController::class, 'search']);
     Route::post('/students', [StudentController::class, 'create']);
-    Route::put('/students/{id}', [StudentController::class, 'update']);
-    Route::delete('/students/{id}', [StudentController::class, 'delete']);
+    Route::post('/update', [StudentController::class, 'update']);
+    Route::post('/delete', [StudentController::class, 'delete']);
     Route::post('/students/login', [StudentController::class, 'login']);
 
     Route::get('/employees', [EmployeeController::class, 'employee']);

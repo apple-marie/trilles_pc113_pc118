@@ -40,18 +40,20 @@ class StudentController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $student = Student::find($id);
+        $student = Student::find($request->id);
         if (is_null($student)) {
-            return response()->json(['message' => 'Student not found'], 404);
+            return response()->json([
+                'message' => 'Student not found',
+                'data' => $request->id
+            ]);
         }
 
         $validatedData = $request->validate([
             'first_name' => 'string',
             'last_name' => 'string',
-            'email' => 'email|unique:students,email,'.$id,
-            'password' => 'nullable',
+            'email' => 'email',
         ]);
 
         $student->update($validatedData);
@@ -61,11 +63,11 @@ class StudentController extends Controller
         ]);
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $student = Student::find($id);
+        $student = Student::find($request->id);
         if (is_null($student)) {
-            return response()->json(['message' => 'Student not found'], 404);
+            return response()->json(['message' => 'Student not found']);
         }
         $student->delete();
         return response()->json([

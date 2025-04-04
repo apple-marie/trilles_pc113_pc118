@@ -39,7 +39,7 @@
         </table>
     </div>
 
-
+<!-- edit modal -->
 <div class="modal fade" id="edit" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -51,6 +51,7 @@
       <div class="card shadow">
         <div class="card-body">
             <form action="" method="POST">
+                <input type="hidden" id="id" name="id" value="">
                 <!--  Name & lastname Field -->
                 <div class="mb-3">
                     <label for="firstname" class="form-label">FirstName</label>
@@ -78,10 +79,31 @@
   </div>
 </div>
 
+<!-- delete modal -->
+<div class="modal fade" id="delete" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this student?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="deletebtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const token = localStorage.getItem('token');
@@ -119,7 +141,7 @@
                                     data-bs-toggle="modal" data-bs-target="#edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path> <path d="M16 5l3 3"></path> </svg> 
                                     </a>
-                                    <a style="color:red" class="text-decoration-none" href="delete.php?id=${row.id}">
+                                    <a style="color:red" id="trashcan" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#delete" data-id="${row.id}">
                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
                                         <path d="M4 7l16 0"></path>
                                         <path d="M10 11l0 6"></path>
@@ -146,6 +168,8 @@
                 let lastname = $(this).data('lastname');
                 let email = $(this).data('email');
 
+                // ipasa ang mga data sa modal
+                $('#edit').find("input[name='id']").val(id);
                 $('#edit').find("input[name='firstname']").val(firstname);
                 $('#edit').find("input[name='lastname']").val(lastname);
                 $('#edit').find("input[name='email']").val(email);
@@ -153,15 +177,62 @@
             })
         </script>
 
+<!-- pagsaved na sa imong gi update sa database -->
+        <script>
+            $(document).on('click','#updatebtn', function() {
+                let id = document.getElementById('id').value;
+                let firstname = document.getElementById('firstname').value;
+                let lastname = document.getElementById('lastname').value;
+                let email = document.getElementById('email').value;
 
-    <script>
-        $(document).on('click','#updatebtn', function() {
-            let firstname = document.getElementById('firstname').value;
-            let lastname = document.getElementById('lastname').value;
-            let email = document.getElementById('email').value;
-            
-        } )
-    </script>
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/api/update',
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        'Accept': 'application/json'
+                    },
+                    data: {
+                        id: id,
+                        first_name: firstname,
+                        last_name: lastname,
+                        email: email
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        location.reload();
+                    }
+                })
+
+                
+            } )
+        </script>
+
+<!-- pagdelete sa student -->
+        <script>
+            $(document).on('click', '#trashcan', function() {
+                let id = $(this).data('id');
+                
+                $(document).on('click', '#deletebtn', function() {
+                    $.ajax({
+                        url: 'http://127.0.0.1:8000/api/delete',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Accept': 'application/json'
+                        },
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            alert(response.message);
+                            location.reload();
+                        }
+                    })
+                })
+                 
+            })
+        </script>
 
 
 
