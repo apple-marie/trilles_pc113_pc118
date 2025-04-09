@@ -63,6 +63,7 @@ class StudentController extends Controller
         ]);
     }
 
+
     public function delete(Request $request)
     {
         $student = Student::find($request->id);
@@ -98,4 +99,6 @@ class StudentController extends Controller
 
         ]);
     }
+
+    
 }

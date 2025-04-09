@@ -33,6 +33,7 @@ Route::get('/students', [StudentController::class, 'index']);
     Route::post('/update', [StudentController::class, 'update']);
     Route::post('/delete', [StudentController::class, 'delete']);
     Route::post('/students/login', [StudentController::class, 'login']);
+    
 
     Route::get('/employees', [EmployeeController::class, 'employee']);
     Route::get('/employees/search', [EmployeeController::class, 'search']);
