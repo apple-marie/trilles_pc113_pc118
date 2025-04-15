@@ -14,12 +14,12 @@ class FileUploadController extends Controller
         return response()->json(FileUpload::all());
     }
 
-    
+
     public function fileUpload(Request $request)
     {
         try{
             $request->validate([
-                'path' => 'required|mimes:pdf,doc,docx|max:10240',
+                'path' => 'required|mimes:pdf,doc,docx,png,jpeg,jpg|max:10240',
                 'name' => 'required',
             ]);
     
