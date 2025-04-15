@@ -59,7 +59,7 @@ class StudentController extends Controller
         $student->update($validatedData);
         return response()->json([
             'message' => 'Student updated successfully',
-            'student' => $student,
+            'student' => $request->id,
         ]);
     }
 
@@ -99,6 +99,8 @@ class StudentController extends Controller
 
         ]);
     }
+
+
 
     
 }

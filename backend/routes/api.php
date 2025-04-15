@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FileUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,6 @@ Route::get('/student/{id}', [StudentController::class, 'show']);
 
 Route::post('/users/login', [UserController::class,'login']);
 Route::post('/users',[UserController::class,'create']);
-
 Route::get('/students', [StudentController::class, 'index']);
 // Route::middleware('allowed.roles')->group(function (){
     Route::get('/students/search', [StudentController::class, 'search']);
@@ -42,5 +42,7 @@ Route::get('/students', [StudentController::class, 'index']);
     Route::delete('/employees/{id}', [EmployeeController::class, 'delete']);
     Route::post('/employees/login', [EmployeeController::class, 'login']);
 
+    Route::post('/fileupload', [FileUploadController::class, 'fileUpload']);
+    Route::get('/fileuploads', [FileUploadController::class, 'index']);
 
 // });
