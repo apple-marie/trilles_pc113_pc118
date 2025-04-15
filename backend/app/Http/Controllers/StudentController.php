@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Course;
+
 
 class StudentController extends Controller
 {
     public function index()
     {
-        return response()->json(Student::all());
+        return response()->json(Student::with('course')->get());
     }
 
     public function search(Request $request)
@@ -40,7 +42,7 @@ class StudentController extends Controller
         ], 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request,$id)
     {
         $student = Student::find($request->id);
         if (is_null($student)) {
@@ -59,7 +61,7 @@ class StudentController extends Controller
         $student->update($validatedData);
         return response()->json([
             'message' => 'Student updated successfully',
-            'student' => $request->id,
+            'student' => $student,
         ]);
     }
 

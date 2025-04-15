@@ -10,11 +10,18 @@ use Illuminate\Notifications\Notifiable;
 
 class Student extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
     protected $fillable = [
         'first_name',
         'last_name',
+        'age',
+        'course_id',
+        'year_level',
         'email',
         'password',
     ];
+
+    public function course() {
+        return $this->belongsTo(Course::class);
+    }
 }

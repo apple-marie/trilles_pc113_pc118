@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/dist/css/dropify.css">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -31,11 +30,14 @@
             <a href="" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addstudent">Add Student</a>
 
             <table class="table table-striped table-bordered" id="students">
-                <thead class="table-dark">
+                <thead class="table-primary">
                     <tr>
                         <th>#</th>
                         <th>Firstname</th>
                         <th>Lastname</th>
+                        <th>Age</th>
+                        <th>Course</th>
+                        <th>Year</th>
                         <th>Email</th>
                         <th class="col-1">Action</th>
                     </tr>
@@ -43,116 +45,14 @@
                 <tbody></tbody>
             </table>
             </div>
-            <div class="p-3">
-                <button class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#fileUpload">Upload File</button>
-                <div class="file p-3" style="background-color: #e6e6e6">
-                    
-                    <div class="file-con" id="filecon"></div>
-                </div>
-            </div>
 
-        </div>
-
-        <!-- file upload modal -->
-        <div class="modal fade" id="fileUpload" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">File Upload</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="file"class="dropify" id="file_upload">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="uploadBtn" class="btn btn-primary">Upload</button>
-                </div>
-                </div>
             </div>
-        </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
-    <script src="http://127.0.0.1:8000/dist/js/dropify.min.js"></script>
 
-    <!-- dropify script -->
-    <script>
-        $(document).ready(function() {
-            $('.dropify').dropify({
-                messages: {
-                    'default': 'Drag and drop a file here or click',
-                    'replace': 'Drag and drop or click to replace',
-                    'remove':  'Remove',
-                    'error':   'Ooops, something wrong appended.'
-                }
-            })
-        })
-    </script>
 
-    <!-- upload file -->
-     <script>
-        $(document).on('click', '#uploadBtn', function(event) {
-            event.preventDefault();
-            let file = document.getElementById('file_upload');
-            let formData = new FormData();
-            formData.append('path', file.files[0]);
-            formData.append('name', file.files[0].name);
-            
-
-            fetch('http://127.0.0.1:8000/api/fileupload', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    'Accept': 'application/json'
-                },
-                body: formData,
-            })
-            .then(res => res.json())
-            .then(response => {
-                if (response.message) {
-                    Swal.fire({
-                        title: "File Uploaded!",
-                        text: "File uploaded successfully.",
-                        icon: "success"
-                    }).then(() => {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "There was an issue uploading the file.",
-                        icon: "error"
-                    });
-                }   
-            })
-        })
-     </script>
-
-<!-- pagdisplay sa file nga na upload -->
-<script>
-    $(document).ready(function(){
-        let fileCon = document.getElementById('filecon');
-        fetch('http://127.0.0.1:8000/api/fileuploads', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Accept': 'application/json'
-            }
-        })
-            .then(res => res.json())
-            .then(response => {
-                response.forEach(data => {
-                    let file = document.createElement('div');
-                    file.innerHTML = data.name;
-                    fileCon.appendChild(file);
-                })
-        })
-    })
-</script>
-
-<!-- pagfetch sa tanang students -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const token = localStorage.getItem('token');
@@ -176,6 +76,14 @@
                         { data: 'id' },
                         { data: 'first_name' },
                         { data: 'last_name' },
+                        { data: 'age' },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return row.course ? row.course.course_name : 'N/A';
+                            }
+                        },
+                        { data: 'year_level' },
                         { data: 'email' },
                         {   
                             data: null,
@@ -186,6 +94,9 @@
                                     data-id="${row.id}"
                                     data-firstname="${row.first_name}"
                                     data-lastname="${row.last_name}"
+                                    data-age="${row.age}"
+                                    data-course="${row.course}"
+                                    data-year="${row.year_level}"
                                     data-email="${row.email}"
                                     data-bs-toggle="modal" data-bs-target="#edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path> <path d="M16 5l3 3"></path> </svg> 
@@ -222,7 +133,7 @@
       <div class="card shadow">
         <div class="card-body">
             <form action="" method="POST">
-                <input type="hidden" id="id" name="id" value="">
+                <input type="hidden" id="id" value="">
                 <!--  Name & lastname Field -->
                 <div class="mb-3">
                     <label for="firstname" class="form-label">FirstName</label>
@@ -313,153 +224,146 @@
   </div>
 </div>
 
+   
+
 <!-- pagpadisplay sa pangan nga editonon adto sa modal -->
-    <script>
-        $(document).on('click', '.editbtn', function() {
-            let id = $(this).data('id');
-            let firstname = $(this).data('firstname');
-            let lastname = $(this).data('lastname');
-            let email = $(this).data('email');
+        <script>
+            $(document).on('click', '.editbtn', function() {
+                let id = $(this).data('id');
+                let firstname = $(this).data('firstname');
+                let lastname = $(this).data('lastname');
+                let email = $(this).data('email');
 
-            // ipasa ang mga data sa modal
-            $('#edit').find("input[name='id']").val(id);
-            $('#edit').find("input[name='firstname']").val(firstname);
-            $('#edit').find("input[name='lastname']").val(lastname);
-            $('#edit').find("input[name='email']").val(email);
+                // ipasa ang mga data sa modal
+                $('#edit').find("input[name='id']").val(id);
+                $('#edit').find("input[name='firstname']").val(firstname);
+                $('#edit').find("input[name='lastname']").val(lastname);
+                $('#edit').find("input[name='email']").val(email);
 
-        })
-    </script>
+            })
+        </script>
 
 <!-- pagsaved na sa imong gi update sa database -->
-    <script>
-        $(document).on('click','#updatebtn', function() {
-            let id = document.getElementById('id').value;
-            let firstname = document.getElementById('firstname').value;
-            let lastname = document.getElementById('lastname').value;
-            let email = document.getElementById('email').value;
-            console.log(id);
+        <script>
+            $(document).on('click','#updatebtn', function() {
+                let id = document.getElementById('id').value;
+                let firstname = document.getElementById('firstname').value;
+                let lastname = document.getElementById('lastname').value;
+                let email = document.getElementById('email').value;
 
-            $.ajax({
-                url: 'http://127.0.0.1:8000/api/update',
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    'Accept': 'application/json'
-                },
-                data: {
-                    id: id,
-                    first_name: firstname,
-                    last_name: lastname,
-                    email: email
-                },
-                success: function(response) {
-                    console.log(response);
-                    Swal.fire({
-                        title: "Student Updated!",
-                        text: "Student updated successfully.",
-                        icon: "success"
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                    error: function(error) {
-                    Swal.fire({
-                        title: "Error!",
-                        text: "There was an issue updating the student information.",
-                        icon: "error"
-                    });
-                }
-            });
-
-            
-        } )
-    </script>
-
-<!-- pagdelete sa student -->
-    <script>
-        $(document).on('click', '#trashcan', function() {
-            let id = $(this).data('id');
-
-            $(document).on('click', '#deletebtn', function() {
                 $.ajax({
-                    url: 'http://127.0.0.1:8000/api/delete',
+                    url: 'http://127.0.0.1:8000/api/update',
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token'),
                         'Accept': 'application/json'
                     },
                     data: {
-                        id: id
+                        id: id,
+                        first_name: firstname,
+                        last_name: lastname,
+                        email: email
                     },
                     success: function(response) {
                         Swal.fire({
-                                title: "Are you sure?",
-                                text: "You won't be able to revert this!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, delete it!"
-                                }).then((result) => {
-                                if (result.isConfirmed) {
-                                    Swal.fire({
-                                    title: "Deleted!",
-                                    text: "Your file has been deleted.",
-                                    icon: "success"
-                                }).then(() => {
-                                    location.reload(); 
-                                });
-                            }
+                            title: "Student Updated!",
+                            text: "Student updated successfully.",
+                            icon: "success"
+                        }).then(() => {
+                            location.reload();
                         });
                     },
-                    error: function(error) {
+                       error: function(error) {
                         Swal.fire({
                             title: "Error!",
-                            text: "There was an issue deleting the student.",
+                            text: "There was an issue updating the student information.",
                             icon: "error"
                         });
                     }
                 });
+
+                
+            } )
+        </script>
+
+<!-- pagdelete sa student -->
+        <script>
+           $(document).on('click', '#trashcan', function() {
+                let id = $(this).data('id');
+
+                $(document).on('click', '#deletebtn', function() {
+                    $.ajax({
+                        url: 'http://127.0.0.1:8000/api/delete',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Accept': 'application/json'
+                        },
+                        data: {
+                            id: id
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes, delete it!"
+                                    }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        Swal.fire({
+                                        title: "Deleted!",
+                                        text: "Your file has been deleted.",
+                                        icon: "success"
+                                    }).then(() => {
+                                        location.reload(); 
+                                    });
+                                }
+                            });
+                        },
+                        error: function(error) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "There was an issue deleting the student.",
+                                icon: "error"
+                            });
+                        }
+                    });
+                });
             });
-        });
-    </script>
+        </script>
 
 <!-- pag add ug bag o nga student -->
-    <script>
-        $(document).on('click', '#addbtn', function() {
-            let firstname = document.getElementById('firstName').value;
-            let lastname = document.getElementById('lastName').value;
-            let email = document.getElementById('addEmail').value;
-            let password = document.getElementById('password').value;
+        <script>
+            $(document).on('click', '#addbtn', function() {
+                let firstname = document.getElementById('firstName').value;
+                let lastname = document.getElementById('lastName').value;
+                let email = document.getElementById('addEmail').value;
+                let password = document.getElementById('password').value;
 
-            $.ajax({
-                url: 'http://127.0.0.1:8000/api/students',
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                },
-                data:{
-                    first_name: firstname,
-                    last_name: lastname,
-                    email: email,
-                    password: password
-                },
-                success: function(response) {
-
-                    Swal.fire({
-                        title: "Student Added!",
-                        text: "Student added successfully.",
-                        icon: "success"
-                    }).then(() => {
+                $.ajax({
+                    url: 'http://127.0.0.1:8000/api/students',
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+                    data:{
+                        first_name: firstname,
+                        last_name: lastname,
+                        email: email,
+                        password: password
+                    },
+                    success: function(response) {
+                        alert(response.message);
                         location.reload();
                     }
-                )}
+                })
             })
-        })
-    </script>   
+        </script>   
 
-<!-- pagdisplay sa na upload nga file -->
 
 
 
