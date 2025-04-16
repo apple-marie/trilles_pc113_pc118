@@ -33,6 +33,9 @@ class StudentController extends Controller
             'last_name' => 'required|string',
             'email' => 'required|email|unique:students,email',
             'password' => 'required|string|min:8',
+            'age' => 'required',
+            'course_id' => 'required|exists:courses,id',
+            'year_level' => 'required|integer',
         ]);
 
         $student = Student::create($validatedData);
@@ -56,6 +59,10 @@ class StudentController extends Controller
             'first_name' => 'string',
             'last_name' => 'string',
             'email' => 'email',
+            'age' => 'integer',
+            'course_id' => 'exists:courses,id',
+            'year_level' => 'integer',
+        
         ]);
 
         $student->update($validatedData);
@@ -63,7 +70,7 @@ class StudentController extends Controller
             'message' => 'Student updated successfully',
             'student' => $student,
         ]);
-    }
+        }
 
 
     public function delete(Request $request)

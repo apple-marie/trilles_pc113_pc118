@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FileUploadController;
@@ -33,15 +34,14 @@ Route::get('/students', [StudentController::class, 'index']);
     Route::post('/update', [StudentController::class, 'update']);
     Route::post('/delete', [StudentController::class, 'delete']);
     Route::post('/students/login', [StudentController::class, 'login']);
+
+
+    Route::get('/course', [CourseController::class, 'getCourse']);
+    Route::post('/course', [CourseController::class, 'create']);
+    Route::post('/course/update', [CourseController::class, 'update']);
+    Route::post('/course/delete', [CourseController::class, 'delete']);
+
     
-
-    Route::get('/employees', [EmployeeController::class, 'employee']);
-    Route::get('/employees/search', [EmployeeController::class, 'search']);
-    Route::post('/employees', [EmployeeController::class, 'create']);
-    Route::put('/employees/{id}', [EmployeeController::class, 'update']);
-    Route::delete('/employees/{id}', [EmployeeController::class, 'delete']);
-    Route::post('/employees/login', [EmployeeController::class, 'login']);
-
     Route::post('/fileupload', [FileUploadController::class, 'fileUpload']);
     Route::get('/fileuploads', [FileUploadController::class, 'index']);
 

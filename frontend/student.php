@@ -18,17 +18,11 @@
                 <?php include 'partial/sidebar.php'; ?>
     </div>
 
-<div class="d-flex flex-column" style="width: 100%;">
-    
-    <?php include 'partial/navbar.php'; ?>
+    <div class="d-flex flex-column" style="width: 100%;">
+        <?php include 'partial/navbar.php'; ?>
 
-
-    
-        
-                <div class="container mt-2">
-
+        <div class="container mt-2">
             <a href="" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addstudent">Add Student</a>
-
             <table class="table table-striped table-bordered" id="students">
                 <thead class="table-primary">
                     <tr>
@@ -44,14 +38,12 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            </div>
-
-            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
-
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -120,129 +112,146 @@
         });
     </script>
 
-
-<!-- edit modal -->
-<div class="modal fade" id="edit" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Edit Modal -->
+    <div class="modal fade" id="edit" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card shadow">
+              <div class="card-body">
+                  <form action="" method="POST">
+                      <input type="hidden" id="id" value="">
+                      <div class="mb-3">
+                          <label for="firstname" class="form-label">FirstName</label>
+                          <input type="text" class="form-control" id="firstname" name="firstname" required placeholder="Enter firstname">
+                      </div>
+                      <div class="mb-3">
+                          <label for="lastname" class="form-label">LastName</label>
+                          <input type="text" class="form-control" id="lastname" name="lastname" required placeholder="Enter lastname">
+                      </div>
+                      <div class="mb-3">
+                          <label for="age" class="form-label">Age</label>
+                          <input type="text" class="form-control" id="editAge" name="age" required placeholder="Enter age">
+                      </div>
+                      <div class="mb-3">
+                          <label for="course" class="form-label">Course</label>
+                          <input type="text" class="form-control" id="course" name="course" required placeholder="Enter course">
+                      </div>
+                      <div class="mb-3">
+                          <label for="year" class="form-label">Year</label>
+                          <input type="text" class="form-control" id="year" name="year" required placeholder="Enter year">
+                      </div>
+                      <div class="mb-3">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" required placeholder="Enter email">
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="updatebtn">Save changes</button>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-      <div class="card shadow">
-        <div class="card-body">
-            <form action="" method="POST">
-                <input type="hidden" id="id" value="">
-                <!--  Name & lastname Field -->
-                <div class="mb-3">
-                    <label for="firstname" class="form-label">FirstName</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" required placeholder="Enter firstname">
-                </div>
-                <div class="mb-3">
-                    <label for="lastname" class="form-label">LastName</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" required placeholder="Enter lastname">
-                </div>
+    </div>
 
-                <!-- Email Field -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required placeholder="Enter email">
+    <!-- Delete Modal -->
+    <div class="modal fade" id="delete" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this student?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="deletebtn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addstudent" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow">
+                <div class="card-body">
+                    <form action="" method="POST">
+                        <input type="hidden" value="">
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">FirstName</label>
+                            <input type="text" class="form-control" id="firstName" name="firstname" required placeholder="Enter firstname">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">LastName</label>
+                            <input type="text" class="form-control" id="lastName" name="lastname" required placeholder="Enter lastname">
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="text" class="form-control" id="age" name="age" required placeholder="Enter age">
+                        </div>
+                        <div class="mb-3">
+                            <label for="course" class="form-label">Course</label>
+                            <input type="text" class="form-control" id="course" name="course" required placeholder="Enter age">
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="text" class="form-control" id="year" name="year" required placeholder="Enter year">
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="addEmail" name="email" required placeholder="Enter email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                    </form>
                 </div>
-            </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addbtn">Add Student</button>
+            </div>
         </div>
     </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="updatebtn">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- delete modal -->
-<div class="modal fade" id="delete" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete this student?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" id="deletebtn">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- add student modal -->
-<div class="modal fade" id="addstudent" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Student</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <div class="card shadow">
-        <div class="card-body">
-            <form action="" method="POST">
-                <input type="hidden" value="">
-                <!--  Name & lastname Field -->
-                <div class="mb-3">
-                    <label for="firstname" class="form-label">FirstName</label>
-                    <input type="text" class="form-control" id="firstName" name="firstname" required placeholder="Enter firstname">
-                </div>
-                <div class="mb-3">
-                    <label for="lastname" class="form-label">LastName</label>
-                    <input type="text" class="form-control" id="lastName" name="lastname" required placeholder="Enter lastname">
-                </div>
-
-                <!-- Email Field -->
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="addEmail" name="email" required placeholder="Enter email">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div>
-            </form>
-        </div>
-    </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="addbtn">Add Student</button>
-      </div>
-    </div>
-  </div>
-</div>
 
    
-
-<!-- pagpadisplay sa pangan nga editonon adto sa modal -->
-        <script>
-            $(document).on('click', '.editbtn', function() {
-                let id = $(this).data('id');
-                let firstname = $(this).data('firstname');
-                let lastname = $(this).data('lastname');
-                let email = $(this).data('email');
-
-                // ipasa ang mga data sa modal
-                $('#edit').find("input[name='id']").val(id);
-                $('#edit').find("input[name='firstname']").val(firstname);
-                $('#edit').find("input[name='lastname']").val(lastname);
-                $('#edit').find("input[name='email']").val(email);
-
-            })
-        </script>
-
+<!-- pagpa display sa content sa modal -->
+          <script>
+              $(document).on('click', '.editbtn', function() {
+                  let id = $(this).data('id');
+                  let firstname = $(this).data('firstname');
+                  let lastname = $(this).data('lastname');
+                  let email = $(this).data('email');
+                  let age = $(this).data('age');
+  
+                  // ipasa ang mga data sa modal
+                  $('#edit').find("input[name='id']").val(id);
+                  $('#edit').find("input[name='firstname']").val(firstname);
+                  $('#edit').find("input[name='lastname']").val(lastname);
+                  $('#edit').find("input[name='email']").val(email);
+  
+              })
+          </script>
+          
 <!-- pagsaved na sa imong gi update sa database -->
         <script>
             $(document).on('click','#updatebtn', function() {
@@ -342,6 +351,7 @@
                 let lastname = document.getElementById('lastName').value;
                 let email = document.getElementById('addEmail').value;
                 let password = document.getElementById('password').value;
+                let age = document.getElementById('age').value;
 
                 $.ajax({
                     url: 'http://127.0.0.1:8000/api/students',
@@ -354,7 +364,10 @@
                         first_name: firstname,
                         last_name: lastname,
                         email: email,
-                        password: password
+                        password: password,
+                        age: age,
+                        course_id: course_id,
+                        year_level: year_level,
                     },
                     success: function(response) {
                         alert(response.message);
