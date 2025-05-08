@@ -7,9 +7,6 @@
           <span class="ms-2">Apple</span>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Home</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="#">Logout</a>
         </li>
       </ul>

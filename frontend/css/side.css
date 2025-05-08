@@ -1,0 +1,10 @@
+.sidebar-menu li a{
+    padding: 10px;
+    color: #000;
+}
+
+.sidebar-menu li a:hover{
+    background-color: #3674B5;
+    color: #fff;
+    transition: 0.2s;
+}
