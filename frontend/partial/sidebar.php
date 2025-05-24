@@ -47,7 +47,7 @@
                 Courses
             </a>
         </li>
-        <li id="gradeMenu" style="">
+        <li id="gradeMenu">
             <a class="text-decoration-none d-flex align-items-center gap-2" href="#" style="color: #F5EFFF">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1">
                 <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
@@ -59,7 +59,7 @@
                 Grades
             </a>
         </li>
-        <li id="subjectMenu" style="">
+        <li id="subjectMenu">
             <a class="text-decoration-none d-flex align-items-center gap-2" href="#" style="color: #F5EFFF">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1">
                 <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>

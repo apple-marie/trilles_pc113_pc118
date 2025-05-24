@@ -15,35 +15,8 @@
 
      
 <div class="main d-flex " style="width:100%;" >
-    <div class="left-side" style=" width:300px; height:100vh; position:sticky; top:0 ; left:0;">
-                <?php include 'partial/sidebar.php'; ?>
-    </div>
-
-    <div class="d-flex flex-column" style="width: 100%;">
-        <?php include 'partial/navbar.php'; ?>
-
         <div class="container mt-5">
-            <div class="d-flex justify-content-between align-items-center">
-                <a href="add_student.php" class="btn btn-primary mb-3">Add Student</a>
-                <button class="btn btn-danger btn-sm mb-3" onclick="printTable()">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#ffffff"
-                    stroke-width="1"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    >
-                    <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
-                    <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
-                    <path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
-                    </svg>
-                    Print
-                </button>
-            </div>
+
             <table class="table table-striped table-bordered" id="students">
                 <thead class="table-primary">
                     <tr>
@@ -67,11 +40,7 @@
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
 
-    <script>
-        function printTable() {
-            window.open('partial/print.php', '_blank');
-        }
-    </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -93,6 +62,10 @@
                 console.log(data);
                 $('#students').DataTable({
                     data: data,
+                    searching: false,
+                    paging:false,
+                    info: false,
+
                     columns: [
                         { data: 'id' },
                         {
@@ -141,74 +114,15 @@
                     ]
                 });
             })
-            .catch(error => console.error("Error fetching students:", error));
+            .finally(() => {
+                window.print();
+            })
+            .catch(error => console.error("Error fetching students:", error))
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('.image').dropify({
-            messages: {
-                'default': 'Drag and drop a file here or click',
-                'replace': 'Drag and drop or click to replace',
-                'remove': 'Remove',
-                'error': 'Ooops, something wrong appended.'
-            }
+    <script>
+        window.addEventListener('afterprint', function() {
+            window.close();
         })
-    })
-</script>
-
- <?php include 'modals/student_modal.php'; ?>
-
-<!-- pag display sa id nga deletonun -->
-<script>
-        $(document).on('click', '#trashcan', function(e){
-        e.preventDefault();
-        let id = $(this).data('id');
-        $('#delete').find("input[name='id']").val(id);
-    })
-</script>
-
-<!-- pagDelete na sa student -->
-<script>
-    $(document).on('click', '#deletebtn', function(e){
-        e.preventDefault();
-        let id = document.getElementById('deleteId').value;
-
-        $.ajax({
-            url: 'http://localhost:8000/api/delete',
-            type: 'POST',
-            headers: {
-                'Accept': 'application/json',
-            },
-            data: { id: id },
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Student Deleted Successfully',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    location.reload(); // or remove the row using jQuery
-                });
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: xhr.responseJSON.message || 'Something went wrong',
-                });
-            }
-        });
-    });
-</script>
-
-
-   
-
-
-
-
-
-</body>
-</html>
+    </script>

@@ -31,6 +31,7 @@ Route::post('/users/login', [UserController::class,'login']);
 Route::get('/users/logout', [UserController::class,'logout']);
 Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
 Route::post('/reset-password', [UserController::class, 'resetPassword']);
+Route::post('/setup/student', [StudentController::class, 'setupStudent']);
 
 Route::middleware('auth:sanctum')->group(function() {
     // user
@@ -48,7 +49,6 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/delete', [StudentController::class, 'delete']);
         Route::post('/students/login', [StudentController::class, 'login']);
         Route::post('/get/student', [StudentController::class, 'getStudent']);
-        Route::post('/setup/student', [StudentController::class, 'setupStudent']);
     
     
         Route::get('/course', [CourseController::class, 'getCourse']);
