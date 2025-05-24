@@ -91,7 +91,7 @@
                         <form action="" method="POST">
                             <div class="mb-3">
                                 <label for="image" class="form-label">Image</label>
-                                <input type="file" class="form-control" id="image" name="image" required placeholder="Upload image">
+                                <input type="file" class="form-control image" id="image" name="image" required placeholder="Upload image">
                             <div class="mb-3">
                                 <label for="fname" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="fname" name="fname" required placeholder="Enter name">
@@ -124,7 +124,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addbtn">Add User</button>
+                    <button type="button" class="btn btn-primary" style="display:flex; align-items:center; gap:5px"id="addbtn">
+                        Add User
+                        <div class="spinner-border spinner-border-sm text-light" role="status" id="spinner" style="display:none">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>

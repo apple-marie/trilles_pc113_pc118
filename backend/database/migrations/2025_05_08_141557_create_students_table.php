@@ -14,15 +14,19 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
+            $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->integer('age');
+            $table->string('gender');
             $table->string('address');
             $table->string('contact');
             $table->string('image')->nullable();
             $table->foreignId('course_id');
             $table->string('year_level');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('password');
+            $table->string('school_year');
+            $table->string('status');
             $table->timestamps();
         });
     }

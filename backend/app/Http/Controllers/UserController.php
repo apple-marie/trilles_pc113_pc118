@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
+use App\Models\Student;
+use App\Mail\Credentials;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Credentials;
 
 class UserController extends Controller
 {   
@@ -19,6 +21,27 @@ class UserController extends Controller
     public function login(Request $request) 
     {
         $credentials = User::where('email', $request->email)->first();
+        if (!$credentials) {
+            $credentials = Student::where('email', $request->email)->first();
+           
+            try {
+                if(!$credentials || !Hash::check($request->password, $credentials->password)) {
+                    throw new Exception('Invalid credentials');
+                }
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 401);
+            }
+            
+            if($credentials && Hash::check($request->password, $credentials->password)) {
+                $token = $credentials->createToken('token')->plainTextToken;
+                return response()->json([
+                    'token' => $token,
+                    'data' => $credentials
+                ]);
+            }
+        }
 
         try {
             if(!$credentials || !Hash::check($request->password, $credentials->password)) {
@@ -29,14 +52,9 @@ class UserController extends Controller
                 'message' => $e->getMessage()
             ], 401);
         }
-         // Automatically assign roles: admin = 0, regular user = 1
-        if ($credentials) {
-            $credentials->role = $credentials->role ? 0 : 1; 
-            $credentials->save();
-        }
         
         if($credentials && Hash::check($request->password, $credentials->password)) {
-            $token = $credentials->createToken('personal-token')->plainTextToken;
+            $token = $credentials->createToken('token')->plainTextToken;
             return response()->json([
                 'token' => $token,
                 'data' => $credentials
@@ -119,9 +137,9 @@ class UserController extends Controller
             'message' => 'User deleted successfully',
         ]);
     }
-    public function logout(Request $request)
+    public function logout()
     {
-        $user = User::where('email', $request->email)->first();
+        $user = Auth::user();
         if (!$user) {
             return response()->json([
                 'message' => 'User not found'
@@ -132,6 +150,70 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User logged out successfully',
+        ]);
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+        
+        // Send email with reset link
+        Mail::to($user->email)->send(new Credentials($user->id, $user->name));
+
+        return response()->json([
+            'message' => 'Reset link sent successfully',
+        ]); 
+
+    }
+
+    public function resetPassword(Request $request)
+    {
+       $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|confirmed',
+        ]);
+
+        $user = User::where('email', $validatedData['email'])->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+        
+        $user->password = Hash::make($validatedData['password']);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password reset successfully',
+        ]);
+    }
+    public function setupUser(Request $request)
+    {
+        $user = User::find($request->id);
+        return response()->json([
+            'user' => $user,
+        ]);
+    }
+    
+    public function savePassword(Request $request)
+    {
+        $user = User::find($request->id);
+        $user->password = $request->password;
+        $user->update();
+        return response()->json($user);
+
+    }
+    public function getUser()
+    {
+        $user = Auth::user();
+        
+        return response()->json([
+            'user' => $user,
         ]);
     }
 

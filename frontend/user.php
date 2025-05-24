@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+
     
-    <link rel="stylesheet" href="css/side.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/dist/css/dropify.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/dist/css/dropify.min.css">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -27,7 +29,6 @@
 
         <div class="container mt-4">
             <div class="d-flex justify-content-between mb-3">
-                <h2>User Management</h2>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser">Add User</button>
             </div>
 
@@ -57,8 +58,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.min.js"></script>
+<script src="http://127.0.0.1:8000/dist/js/dropify.js"></script>
+<script src="http://127.0.0.1:8000/dist/js/dropify.min.js"></script>
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('.image').dropify({
+            messages: {
+                'default': 'Drag and drop a file here or click',
+                'replace': 'Drag and drop or click to replace',
+                'remove': 'Remove',
+                'error': 'Ooops, something wrong appended.'
+            }
+        })
+    })
+</script>
 
 <!-- display Users -->
 <script>
@@ -121,6 +135,7 @@
 <!-- Add User -->
     <script>
         $(document).on('click', '#addbtn', function() {
+            document.getElementById('spinner').style.display = 'block';
             let image = document.getElementById('image').files[0];
             let fullname = document.getElementById('fname').value;
             let address = document.getElementById('address').value;
@@ -128,9 +143,12 @@
             let email = document.getElementById('addEmail').value;
             let password = document.getElementById('password').value;
             let role = document.getElementById('role').value;
+            console.log(image);
 
             let formData = new FormData();
-            formData.append('image', image);
+            if (image){
+                formData.append('image', image);
+            }
             formData.append('name', fullname);
             formData.append('address', address);
             formData.append('contact', contact);
@@ -156,10 +174,14 @@
                     }).then(() => {
                         location.reload();
                     });
+                },
+                complete: function() {
+                    document.getElementById('spinner').style.display = 'none';
                 }
             })
         })
     </script>   
+
 
 
 <!-- pagdisplay sa editonun nga user -->
