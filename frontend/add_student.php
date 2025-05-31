@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/media.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -62,11 +63,11 @@
 
                 </select>
                 <select class="form-select " id="addYear" name="year" aria-label="Default select example">
-                    <option selected>Year Level</option>
-                    <option value="1ST Year">1ST Year</option>
-                    <option value="2ND Year">2ND Year</option>
-                    <option value="3RD Year">3RD Year</option>
-                    <option value="4TH Year">4TH Year</option>
+                    <option elected disabled>Year Level</option>
+                    <option value="First Year">First Year</option>
+                    <option value="Second Year">Second Year</option>
+                    <option value="Third Year">Third Year</option>
+                    <option value="Fourth Year">Fourth Year</option>
                 </select>
                     
                 <div class="mb-3">

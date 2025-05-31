@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\EnrollmentReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/user/update',[UserController::class,'update']);
     Route::post('/user/delete',[UserController::class,'delete']);
     Route::get('/get/user', [UserController::class, 'getUser']);
+    // Route::post('/users/import', [UserController::class, 'import']);
+    // Route::get('/users/export', [UserController::class, 'export']);
+
 
     Route::get('/students', [StudentController::class, 'index']);
     // Route::middleware('allowed.roles')->group(function (){
@@ -55,6 +59,14 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/course', [CourseController::class, 'create']);
         Route::post('/course/update', [CourseController::class, 'update']);
         Route::post('/course/delete', [CourseController::class, 'delete']);
+
+    // Report
+        Route::get('/enrolled/students', [EnrollmentReportController::class, 'byYear']);
+        Route::get('/report/courses', [EnrollmentReportController::class, 'byCourseAndYearLevel']);
+        Route::get('/report/export', [EnrollmentReportController::class, 'export']);
+        Route::post('/report/import', [StudentController::class, 'import']);
+
+
 });
 
 

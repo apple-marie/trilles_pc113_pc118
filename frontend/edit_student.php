@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/media.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="http://127.0.0.1:8000/dist/css/dropify.css">
@@ -63,10 +64,10 @@
                 </select>
                 <select class="form-select " id="year" name="year" aria-label="Default select example">
                     <option selected disabled>Year Level</option>
-                    <option value="1ST Year">1ST Year</option>
-                    <option value="2ND Year">2ND Year</option>
-                    <option value="3RD Year">3RD Year</option>
-                    <option value="4TH Year">4TH Year</option>
+                    <option value="First Year">First Year</option>
+                    <option value="Second Year">Second Year</option>
+                    <option value="Third Year">Third Year</option>
+                    <option value="Fourth Year">Fourth Year</option>
                 </select>
                     
                 <div class="mb-3">

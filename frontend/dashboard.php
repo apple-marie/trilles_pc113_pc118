@@ -6,6 +6,7 @@
     <title>Dashboard</title>
     
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/media.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
 
@@ -27,7 +28,8 @@
 
        <h3>Welcome back!</h3>
 
-</div>
+
+</div> 
 
 
 
@@ -44,6 +46,33 @@
 
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
+    <script>
+        fetch('http://127.0.0.1:8000/api/enrolled/students', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let mainCon = document.getElementById('studentCount');
+            
+            console.log(data.student);
+            data.student.forEach(students => {
+                let card = document.createElement('div');
+                let year = document.createElement('div');
+                let count = document.createElement('div');
+                year.textContent = students.year_level;
+                count.textContent = students.total;
+
+                card.appendChild(year);
+                card.appendChild(count);
+                mainCon.appendChild(card);
+            })
+        })
+    </script>
 
 </body>
 </html>

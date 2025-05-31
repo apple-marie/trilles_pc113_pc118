@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Mail\StudentCredentials;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Imports\ImportStudent;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class StudentController extends Controller
@@ -160,6 +162,46 @@ class StudentController extends Controller
         $student = Student::with('course')->where('id', $request->id)->first();
         return response()->json($student);
     }
+
+    
+
+    public function import(Request $request)
+    {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,csv,xls'
+            ]);
+            $import = new ImportStudent;
+            Excel::import($import, $request->file('file'));
+    
+            foreach($import->rows as $row) {
+                $course = Course::where('course_name', $row['course_name'])->first();
+    
+                if(!$course) {
+                    return response()->json(['message' => 'Course not found: ' . $row['course']], 404);
+                }
+    
+                $student = Student::create([
+                    'first_name' => $row['first_name'],
+                    'middle_name' => $row['middle_name'],
+                    'last_name' => $row['last_name'],
+                    'email' => $row['email'],
+                    'gender' => $row['gender'],
+                    'address' => $row['address'],
+                    'contact' => $row['contact'],
+                    'age' => $row['age'],
+                    'course_id' => $course->id,
+                    'year_level' => $row['year_level'],
+                    'school_year' => $row['school_year'],
+                    'status' => 'Enrolled',
+                    'password' => bcrypt($row['password']),
+                ]);
+    
+                Mail::to($student->email)->send(new StudentCredentials($student->id, $student->first_name));
+            }
+    
+            return response()->json(['message' => 'Students successfully imported.']);
+        }
+
 
 
 

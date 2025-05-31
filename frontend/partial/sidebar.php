@@ -1,4 +1,7 @@
 
+<!-- Mobile Toggle Button -->
+<button class="sidebar-toggle burger" onclick="toggleSidebar()">☰</button>
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
 
 <div class="sidebar pt-2 bg-primary" style="height: 100vh; position: sticky; top: 0; left: 0;">
     <img src="http://127.0.0.1:8000/storage/images/logo.png" alt="" class="mx-2 d-flex" style="height: 100px; width: 80%; object-fit: cover;">
@@ -70,8 +73,8 @@
                 Subject
             </a>
         </li>
-        <li id="studentGradeMenu" style="display: none">
-            <a class="text-decoration-none d-flex align-items-center gap-2" href="#" style="color: #F5EFFF">
+        <li id="reportMenu" style="display: none">
+            <a class="text-decoration-none d-flex align-items-center gap-2" href="report.php" style="color: #F5EFFF">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1">
                 <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
                 <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
@@ -79,18 +82,7 @@
                 <path d="M12 17l0 -1"></path>
                 <path d="M15 17l0 -3"></path>
                 </svg>
-                Student Grades
-            </a>
-        </li>
-        <li id="subjectLoadMenu" style="display: none">
-            <a class="text-decoration-none d-flex align-items-center gap-2" href="#" style="color: #F5EFFF">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1">
-                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                <path d="M9 17h6"></path>
-                <path d="M9 13h6"></path>
-                </svg>
-                Subject Loads
+                Reports
             </a>
         </li>
         
@@ -112,19 +104,27 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data.user.role);
             if (data.user.role == 0) {
                 userMenu.style.display = 'block';
             }
             if(data.user.role == 0 || data.user.role == 1) {
                 document.getElementById('gradeMenu').style.display = 'none';
                 document.getElementById('subjectMenu').style.display = 'none';
-                document.getElementById('subjectLoadMenu').style.display = 'block';
                 document.getElementById('studentMenu').style.display = 'block';
                 document.getElementById('courseMenu').style.display = 'block';
-                document.getElementById('studentGradeMenu').style.display = 'block';
+                document.getElementById('reportMenu').style.display = 'block';
             }
         })
     })
 </script>
 
+
+
+<script>
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+}
+</script>

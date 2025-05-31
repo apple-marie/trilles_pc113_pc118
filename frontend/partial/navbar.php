@@ -34,6 +34,9 @@
               case $page == '/course.php':
                 echo 'Course Management';
                 break;
+              case $page == '/report.php':
+                echo 'Report';
+                break;
             }
         ?>
 
@@ -47,13 +50,13 @@
           data-bs-toggle="dropdown" 
           aria-expanded="false"
       >
-          <div>Apple</div>
+          <div>Profile</div>
       </div>
 
       <ul class="user-drop dropdown-menu dropdown-menu-lg-end p-0" style="border: 1px solid #e0e0e0; width:200px">
           <li>
               <a href="#" id="profileBtn" class="list-group-item p-2">
-                  <div id="user_name">Apple Marie</div>
+                
                   <small class="text-secondary" style="font-size: 12px">Profile</small>
               </a>
           </li>

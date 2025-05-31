@@ -6,6 +6,7 @@
 
     
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/media.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.min.css">
@@ -18,7 +19,7 @@
 
 
 <div class="main d-flex " style="width:100%;" >
-    <div class="left-side " style="width:300px; height:100vh; position:sticky; top:0 ; left:0;">
+    <div class="left-side">
         <?php include 'partial/sidebar.php'; ?>
     </div>
 
@@ -31,6 +32,7 @@
             <div class="d-flex justify-content-between mb-3">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUser">Add User</button>
             </div>
+
 
             <table id="userTable" class="table table-bordered table-striped">
                 <thead class="table-primary">
@@ -88,6 +90,7 @@
         .then(data => {
             let userTable = $('#userTable').DataTable({
                 data: data,
+                scrollX: true,
                 columns: [
                     {data: 'id'},
                     {
@@ -292,6 +295,32 @@
         });
     })
  </script>
+
+<script>
+    $('#importForm').on('submit', function(e) {
+        e.preventDefault();
+        let formData = new FormData();
+        let file = document.getElementById('importFile').files[0];
+        formData.append('file', file);
+
+        fetch('http://localhost:8000/api/users/import', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Import Successful',
+                text: 'Users imported successfully.',
+                confirmButtonText: 'OK'
+            }).then(() => location.reload());
+        })
+    });
+</script>
 
 </body>
 </html>
